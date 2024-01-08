@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 
-type TodolistType = {
+export type TodolistType = {
     id: string,
     title: string,
-    addedDate: Date,
+    addedDate: string,
     order: number
 }
 
@@ -21,15 +21,15 @@ const instance = axios.create({
 
 export const todolistApi = {
     getTodolist() {
-        return instance.get<Array<TodolistType>>('/todo-lists')
+        return instance.get<TodolistType[]>('/todo-lists')
     },
     createTodolist(title: string) {
-        return instance.post<ResponseType<{item: TodolistType}>>('/todo-lists',{title: title})
+        return instance.post<ResponseType<{item: TodolistType}>, AxiosResponse<ResponseType<{item: TodolistType}>>, {title:string}>('/todo-lists',{title: title})
     },
     deleteTodolist(todolistID: string) {
         return instance.delete<ResponseType>( `/todo-lists/${todolistID}`)
     },
     updateTodolistTitle(todolistID: string, newTitle: string) {
-        return instance.put<ResponseType>( `/todo-lists/${todolistID}`,{title: newTitle})
+        return instance.put<ResponseType, AxiosResponse<ResponseType>,{title:string}>( `/todo-lists/${todolistID}`,{title: newTitle})
     }
 }
