@@ -18,12 +18,8 @@ import {
     removeTodolistAC, setTodolistsTC, TodolistDomainType
 } from './state/todolists-reducer';
 import {
-    addTaskAC,
     addTasksTC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
-    removeTaskAC,
-    removeTasksTC, updateTaskStatusTC
+    removeTasksTC, updateTaskTC
 } from './state/tasks-reducer';
 import {useAppDispatch, useAppSelector} from './state/store';
 import {TaskStatuses, TaskType} from "./api/tasks-api";
@@ -52,12 +48,11 @@ function App() {
     }, []);
 
     const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-        dispatch(updateTaskStatusTC(todolistId,id,status));
+        dispatch(updateTaskTC(todolistId,id,{status: status}));
     }, []);
 
     const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-        const action = changeTaskTitleAC(id, newTitle, todolistId);
-        dispatch(action);
+        dispatch(updateTaskTC(todolistId, id, {title: newTitle}))
     }, []);
 
     const changeFilter = useCallback(function (value: FilterValuesType, todolistId: string) {

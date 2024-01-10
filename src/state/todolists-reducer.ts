@@ -10,7 +10,6 @@ export type TodolistDomainType = TodolistType & {
 export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
 export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
 export type SetTodolistActionType = ReturnType<typeof setTodolistsAC>
-
 type ActionsType = RemoveTodolistActionType
     | AddTodolistActionType
     | ReturnType<typeof changeTodolistTitleAC>
