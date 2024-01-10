@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {todolistApi} from "../api/todolist-api";
+import {changeTodolistTitleTC} from "../features/TodolistsList/todolists-reducer";
 
 export default {
     title: 'API'
@@ -42,9 +43,9 @@ export const DeleteTodolist = () => {
 export const UpdateTodolistTitle = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        const todolistID = "bebf3548-d4bf-4169-9eb7-caa5fccb0865"
+        const todolistID = "c8498aa3-c4b0-4663-b5b4-5009f05b6f03"
         const newTitle = 'DIMYCH'
-        todolistApi.updateTodolistTitle(todolistID, newTitle)
+        todolistApi.updateTodolistTitle(todolistID,newTitle)
             .then((res)=>{
                 setState(res.data)
             })
