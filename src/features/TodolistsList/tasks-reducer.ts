@@ -7,6 +7,7 @@ import {TaskPriorityes, tasksApi, TaskStatuses, TaskType, UpdateTaskModelType} f
 import {Dispatch} from "redux";
 import {TasksStateType} from "../../app/App";
 import {AppRootStateType} from "../../app/store";
+import {setAppStatusAC} from "../../app/app-reducer";
 
 const initialState: TasksStateType = {}
 
@@ -56,24 +57,31 @@ export const setTasksAC = (todolistID: string, tasks: TaskType[])=>
 
 //thunks
 export const getTasksTC = (todolistID: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     tasksApi.getTasks(todolistID)
         .then((res) => {
             dispatch(setTasksAC(todolistID,res.data.items))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 export const removeTasksTC = (todolistID: string, taskID: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     tasksApi.deleteTask(todolistID, taskID)
         .then(() => {
             dispatch(removeTaskAC(taskID,todolistID))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 export const addTasksTC = (todolistID: string, title: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     tasksApi.createTask(todolistID,title)
         .then((res) => {
             dispatch(addTaskAC(res.data.data.item))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 export const updateTaskTC = (todolistID: string, taskID: string, domainModel: UpdateTaskDomainModelType) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    dispatch(setAppStatusAC('loading'))
     const task = getState().tasks[todolistID].find(t => t.id === taskID)
     console.log(task)
     if (task) {
@@ -89,6 +97,7 @@ export const updateTaskTC = (todolistID: string, taskID: string, domainModel: Up
         tasksApi.updateTask(todolistID, taskID, apiModel)
             .then(() => {
                 dispatch(updateTaskAC(taskID, domainModel, todolistID))
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }

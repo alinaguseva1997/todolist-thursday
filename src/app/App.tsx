@@ -9,12 +9,16 @@ import Container from '@mui/material/Container';
 import {Menu} from '@mui/icons-material';
 import {TaskType} from "../api/tasks-api";
 import {TodolistsList} from "../features/TodolistsList/TodolistsList";
+import LinearProgress from "@mui/material/LinearProgress";
+import {useAppSelector} from "./store";
+import {RequestStatusType} from "./app-reducer";
 
 export type TasksStateType = {
     [key: string]: TaskType[]
 }
 
 function App() {
+    const status = useAppSelector<RequestStatusType>(state => state.app.status)
     return (
         <div className="App">
             <AppBar position="static">
@@ -28,6 +32,7 @@ function App() {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
+            {status === 'loading' && <LinearProgress color="info" />}
             <Container fixed>
                 <TodolistsList />
             </Container>
