@@ -1,4 +1,5 @@
 import axios, {AxiosResponse} from "axios";
+import {ResponseType} from "./todolist-api";
 
 const instance = axios.create({
     withCredentials: true,
@@ -53,9 +54,4 @@ export enum TaskPriorityes {
     Hi = 2,
     Urgently = 3,
     Later = 4
-}
-type ResponseType<T = {}> = {
-    resultCode: number
-    messages: string[],
-    data: T
 }

@@ -12,6 +12,7 @@ import {TodolistsList} from "../features/TodolistsList/TodolistsList";
 import LinearProgress from "@mui/material/LinearProgress";
 import {useAppSelector} from "./store";
 import {RequestStatusType} from "./app-reducer";
+import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 
 export type TasksStateType = {
     [key: string]: TaskType[]
@@ -24,6 +25,7 @@ function App() {
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
+                        <ErrorSnackbar />
                         <Menu/>
                     </IconButton>
                     <Typography variant="h6">
