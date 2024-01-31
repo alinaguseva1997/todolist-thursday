@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from "axios";
 import {ResponseType} from "./todolist-api";
+import {RequestStatusType} from "../app/app-reducer";
 
 const instance = axios.create({
     withCredentials: true,
@@ -33,6 +34,8 @@ export type TaskType = {
     startDate: string,
     deadline: string,
     addedDate: string
+    entityStatus: RequestStatusType
+
 }
 export type UpdateTaskModelType = {
     title: string,

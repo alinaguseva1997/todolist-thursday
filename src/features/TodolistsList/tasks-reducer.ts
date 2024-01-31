@@ -6,7 +6,7 @@ import {
 import {TaskPriorityes, tasksApi, TaskStatuses, TaskType, UpdateTaskModelType} from "../../api/tasks-api";
 import {Dispatch} from "redux";
 import {TasksStateType} from "../../app/App";
-import {AppRootStateType, store} from "../../app/store";
+import {AppRootStateType} from "../../app/store";
 import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
@@ -143,7 +143,6 @@ export type UpdateTaskDomainModelType = {
     priority?: TaskPriorityes,
     startDate?: string,
     deadline?: string,
-    entityStatus?: RequestStatusType
 }
 type ActionsType = ReturnType<typeof removeTaskAC>
     | ReturnType<typeof addTaskAC>
