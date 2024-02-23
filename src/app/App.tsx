@@ -13,6 +13,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import {useAppSelector} from "./store";
 import {RequestStatusType} from "./app-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
+import {Login} from "../features/Login/Login";
+import {Navigate, Route, Routes} from "react-router-dom";
 
 export type TasksStateType = {
     [key: string]: TaskType[]
@@ -36,7 +38,12 @@ function App() {
             </AppBar>
             {status === 'loading' && <LinearProgress color="info" />}
             <Container fixed>
-                <TodolistsList />
+                <Routes>
+                    <Route path={'/'} element={<TodolistsList/>}/>
+                    <Route path={'/login'} element={<Login/>}/>
+                    <Route path={'/404'} element={<h4>404: PAGE NOT FOUND</h4>}/>
+                    <Route path={'*'} element={<Navigate to={'/404'}/>}/> //при попадании на любой несуществующий путь мы делаем перенаправление на 404
+                </Routes>
             </Container>
         </div>
     );
