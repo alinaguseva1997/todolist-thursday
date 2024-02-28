@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from "axios";
 import {ResponseType} from "./todolist-api";
-import {RequestStatusType} from "../app/app-reducer";
+import {LoginDataType} from "../features/Login/Login";
 
 const instance = axios.create({
     withCredentials: true,
@@ -8,7 +8,17 @@ const instance = axios.create({
 })
 
 export const authApi = {
-    login(data: any) {
-        instance.post('/auth/login', {data})
+    me() {
+        return instance.get<ResponseType<AuthResponseDataType>>('/auth/me')
+    },
+    login(data: LoginDataType) {
+       return instance.post<ResponseType<{userId: number}>, AxiosResponse<ResponseType<{userId: number}>>, LoginDataType>('/auth/login', data)
     }
+}
+
+//types
+type AuthResponseDataType = {
+    id: number
+    email: string
+    login: string
 }

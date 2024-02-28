@@ -16,15 +16,18 @@ import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import Paper from "@mui/material/Paper";
 import {Todolist} from "./Todolist/Todolist";
 import {TasksStateType} from "../../app/App";
+import {Navigate} from "react-router-dom";
 
 export const TodolistsList = () => {
     // протипизированный useSelector, который позволяет указывать в типизации только тип данных,
 // которые мы хотим получить, без указания первого параметра - типа, каким является наш AppRootStateType
     const todolists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useAppSelector<TasksStateType>(state => state.tasks)
+    const isLogged = useAppSelector(state => state.auth.isLogged)
     const dispatch = useAppDispatch(); //протипизированный Dispatch, который помогает понять TS, что dispatch может теперь принимать еще и thunk, а не только action
 
     useEffect(() => {
+        if(!isLogged) return //это нужно для того, чтобы не шел запрос за тудулистами, если мы не авторизованы. Проблема: шел лишний запрос
         dispatch(setTodolistsTC())
     }, [])
 
@@ -52,6 +55,10 @@ export const TodolistsList = () => {
     const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistTC(title))
     }, [dispatch]);
+
+    if(!isLogged) {
+        return <Navigate to={'/login'} />
+    }
 
     return (
         <>
