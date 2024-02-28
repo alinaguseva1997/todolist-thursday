@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {authApi} from "../../api/auth-api";
-import {setAppStatusAC} from "../../app/app-reducer";
+import {setAppStatusAC, setIsInitializedAppAC} from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 import {LoginDataType} from "./Login";
 
@@ -35,6 +35,36 @@ export const getIsLoggedTC = (loginData: LoginDataType) => async (dispatch: Disp
         }
     } catch (err) {
         handleServerNetworkError(dispatch, err as { message: string })
+    }
+}
+export const logOutTC = () => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
+    try {
+        const res = await authApi.logOut()
+        if (res.data.resultCode === 0) {
+            dispatch(setIsLoggedAC(false))
+            dispatch(setAppStatusAC("succeeded"))
+        } else {
+            handleServerAppError(dispatch, res.data)
+        }
+    } catch (err) {
+        handleServerNetworkError(dispatch, err as { message: string })
+    }
+}
+export const meTC = () => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC("loading"))
+    try {
+        const res = await authApi.me()
+        if (res.data.resultCode === 0) {
+            dispatch(setIsLoggedAC(true))
+            dispatch(setAppStatusAC("succeeded"))
+        } else {
+            handleServerAppError(dispatch, res.data)
+        }
+    } catch (err) {
+        handleServerNetworkError(dispatch, err as { message: string })
+    } finally{
+        dispatch(setIsInitializedAppAC(true))
     }
 }
 

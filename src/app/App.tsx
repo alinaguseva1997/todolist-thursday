@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './App.css';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,30 +10,52 @@ import {Menu} from '@mui/icons-material';
 import {TaskType} from "../api/tasks-api";
 import {TodolistsList} from "../features/TodolistsList/TodolistsList";
 import LinearProgress from "@mui/material/LinearProgress";
-import {useAppSelector} from "./store";
+import {useAppDispatch, useAppSelector} from "./store";
 import {RequestStatusType} from "./app-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {Login} from "../features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
+import {logOutTC, meTC} from "../features/Login/auth-reducer";
+import {CircularProgress} from "@mui/material";
 
 export type TasksStateType = {
     [key: string]: TaskType[]
 }
 
 function App() {
+
+    const dispatch = useAppDispatch()
     const status = useAppSelector<RequestStatusType>(state => state.app.status)
+    const isInitialized = useAppSelector(state => state.app.isInitialized)
+    const isLogged = useAppSelector(state => state.auth.isLogged)
+
+    useEffect(() => {
+        dispatch(meTC())
+    }, []);
+
+    if (!isInitialized) {
+       return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
+
+    const logOut = () => {
+        dispatch(logOutTC())
+    }
+
     return (
         <div className="App">
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
+                <IconButton edge="start" color="inherit" aria-label="menu">
                         <ErrorSnackbar />
                         <Menu/>
                     </IconButton>
                     <Typography variant="h6">
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    { isLogged && <Button onClick={logOut} color="inherit">LOG OUT</Button>}
                 </Toolbar>
             </AppBar>
             {status === 'loading' && <LinearProgress color="info" />}
